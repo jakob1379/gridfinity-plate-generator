@@ -1,0 +1,14 @@
+{
+  "_output_dir": "/home/jga/Documents/private",
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "Jakob Guldberg Aaes",
+  "copyright_year": "2023",
+  "development_status": "Development Status :: 1 - Planning",
+  "email": "jakob1379@gmail.com",
+  "friendly_name": "Gridfinity Plate Generator",
+  "github_user": "jakob1379",
+  "license": "MIT",
+  "package_name": "gridfinity_plate_generator",
+  "project_name": "gridfinity-plate-generator",
+  "version": "0.1.0"
+}
