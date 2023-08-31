@@ -2,7 +2,7 @@ import math
 
 import typer
 
-from . import gridfinity_generator
+from gridfinity_plate_generator import gridfinity_generator
 
 app = typer.Typer()
 

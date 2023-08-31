@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import stl
 import streamlit as st
 
-from . import gridfinity_generator
+from gridfinity_plate_generator import gridfinity_generator
 
 version = "0.1.0"
 SUPPORT_MAIL = "jakob1379@gmail.com"
