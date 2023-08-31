@@ -19,12 +19,11 @@ Changelog = "https://github.com/jakob1379/gridfinity-plate-generator/releases"
 python = "^3.11"
 click = "^8.1.7"
 typer = "^0.9.0"
-cadquery = "2.3.0"
+cadquery = "2.3.1"
 streamlit = "^1.26.0"
 numpy-stl = "^3.0.1"
 plotly = "^5.16.1"
 python-dotenv = "^1.0.0"
-cadquery-ocp = "^7.7.1"
 
 
 [tool.poetry.dev-dependencies]
