@@ -16,7 +16,7 @@ classifiers = [
 Changelog = "https://github.com/jakob1379/gridfinity-plate-generator/releases"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 click = "^8.1.7"
 typer = "^0.9.0"
 cadquery = "2.3.1"
