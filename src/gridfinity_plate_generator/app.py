@@ -16,7 +16,7 @@ if "figs" not in st.session_state:
 st.markdown(
     f"""
 <footer style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: white; color: gray; text-align: center;">
-<p> ✨ Made by JGA ✨ | Running version {version} | For bug reports 🪲, questions ❓, or feedback 💭, please <a href="mailto:{SUPPORT_MAIL}">email me</a>.</p>
+<p> ✨ Made by JGA ✨ | Running version {version} | For bug reports 🪲, questions ❓, or feedback 💭, please <a href="https://github.com/jakob1379/gridfinity-plate-generator/issues/">create an issue</a>.</p>
 </footer>
 """,
     unsafe_allow_html=True,
