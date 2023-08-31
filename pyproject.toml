@@ -11,6 +11,11 @@ documentation = "https://gridfinity-plate-generator.readthedocs.io"
 classifiers = [
 	"Development Status :: 1 - Planning",
 ]
+packages = [
+	{ include = "gridfinity_plate_generator", from = "src" },
+]
+
+
 
 [tool.poetry.urls]
 Changelog = "https://github.com/jakob1379/gridfinity-plate-generator/releases"
