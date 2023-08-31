@@ -1,0 +1,8 @@
+python
+click
+typer
+cadquery
+streamlit
+numpy-stl
+plotly
+python-dotenv
