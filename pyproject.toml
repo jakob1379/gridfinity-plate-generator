@@ -24,6 +24,7 @@ streamlit = "^1.26.0"
 numpy-stl = "^3.0.1"
 plotly = "^5.16.1"
 python-dotenv = "^1.0.0"
+cadquery-ocp = "^7.7.1"
 
 
 [tool.poetry.dev-dependencies]

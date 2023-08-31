@@ -200,6 +200,27 @@ dev = ["black (==19.10b0)", "click (==8.0.4)", "docutils", "ipython", "pytest"]
 ipython = ["ipython"]
 
 [[package]]
+name = "cadquery-ocp"
+version = "7.7.1"
+description = "OCP+VTK wheel with shared library dependencies bundled."
+optional = false
+python-versions = "*"
+files = [
+    {file = "cadquery_ocp-7.7.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:5fd11c49a49fbd93782c4b8f871f631c35df363d7df0181e423559869cad2d69"},
+    {file = "cadquery_ocp-7.7.1-cp310-cp310-manylinux_2_35_x86_64.whl", hash = "sha256:efc52b7503c28d25b224249b453886aa98ef4a03b9426fe96e8dac56340a074d"},
+    {file = "cadquery_ocp-7.7.1-cp310-cp310-win_amd64.whl", hash = "sha256:e053f2520115cdd7c0d3006bd445887256ce14d0d787d0b622ff1409cbff24f1"},
+    {file = "cadquery_ocp-7.7.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:6c10138a5e5ae48b414b7316ac76678cc8dd1d659ef542a3b7609d25cfc6b277"},
+    {file = "cadquery_ocp-7.7.1-cp311-cp311-manylinux_2_35_x86_64.whl", hash = "sha256:83457789a3045f1c9ab4ee9d00b7169433e567705256637625c2620648029e4d"},
+    {file = "cadquery_ocp-7.7.1-cp311-cp311-win_amd64.whl", hash = "sha256:14597a8b4b10f711c6a7f2eb8e4dd85b25586b0206c773a37c2d0a3c34c7172b"},
+    {file = "cadquery_ocp-7.7.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:4b7a23164f344eb07471533efd2505ee27aa25ae4a37383ef09b241761365c73"},
+    {file = "cadquery_ocp-7.7.1-cp38-cp38-manylinux_2_35_x86_64.whl", hash = "sha256:6b38e857525f2b170c0fdf14770169a822497e2a1afa6c78434021fffd4f63c3"},
+    {file = "cadquery_ocp-7.7.1-cp38-cp38-win_amd64.whl", hash = "sha256:8c85f868c140b04268edae0922bbc74114d0c1bbb84f70075e30558ffb23cbf7"},
+    {file = "cadquery_ocp-7.7.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:ded2a7714114a66857da493dfcc9d6f9db901141725c58c0e892723a4500a8dd"},
+    {file = "cadquery_ocp-7.7.1-cp39-cp39-manylinux_2_35_x86_64.whl", hash = "sha256:3fd169a342a9ae9e7da5e5b1ad0b8820770f3d81c91f808126a8fbf47c1cb98a"},
+    {file = "cadquery_ocp-7.7.1-cp39-cp39-win_amd64.whl", hash = "sha256:a2f06389a89015dc0d098049b75da92b927526a22cb4e5503959442dbb77eff2"},
+]
+
+[[package]]
 name = "certifi"
 version = "2023.7.22"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -2834,4 +2855,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d764be1b499479be67fb84f047e36ccd5fb35d65cedac6700615a4c968a51c43"
+content-hash = "8e70e725c32e951451961112dce4fb7f79e3f29a9ddc0d5968caf31bf913d6c1"
