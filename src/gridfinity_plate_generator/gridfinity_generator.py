@@ -5,7 +5,7 @@ import cadquery as cq
 
 import typer
 
-from gridfinity_plate_generator.config import (
+from .config import (
     default_baseplate_height,
     default_baseplate_width,
     default_bottom_chamfer_height,
