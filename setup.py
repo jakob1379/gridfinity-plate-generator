@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='gridfinity-plate-generator',
+    name='gridfinity_plate_generator',
     version='0.1.0',
     description='Gridfinity Plate Generator',
     long_description=open('README.md').read(),
