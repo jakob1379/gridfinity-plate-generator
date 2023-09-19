@@ -9,6 +9,7 @@ from gridfinity_plate_generator import gridfinity_generator
 
 version = "0.1.0"
 SUPPORT_MAIL = "jakob1379@gmail.com"
+params = {}
 
 if "figs" not in st.session_state:
     st.session_state.figs = {}
@@ -48,8 +49,12 @@ def create_stl_figure(file_name: str) -> go.Figure:
 
     return fig
 
-
-def generate_and_process(filename_prefix: str, cols: int, rows: int) -> dict:
+def generate_and_process(
+        filename_prefix: str,
+        cols: int | None = None,
+        rows: int | None = None,
+        width: float | None = None,
+        length: float | None = None) -> dict:
     """Generate and process the STL files.
 
     Args:
@@ -60,31 +65,69 @@ def generate_and_process(filename_prefix: str, cols: int, rows: int) -> dict:
     Returns:
     - dict: A dictionary containing figure, path, and name.
     """
+
     with tempfile.NamedTemporaryFile() as tmpfile:
         filename = f"{tmpfile.name}_{filename_prefix}.stl"
-        getattr(gridfinity_generator, filename_prefix)(
-            columns=cols, rows=rows, output_filename=filename
-        )
+
+        if cols and rows:
+            getattr(gridfinity_generator, filename_prefix)(
+                columns=cols, rows=rows, output_filename=filename
+            )
+        elif width and length:
+            getattr(gridfinity_generator, filename_prefix)(
+                width=width, length=length, output_filename=filename
+            )
+
+    # with tempfile.NamedTemporaryFile() as tmpfile:
+    #     filename = f"{tmpfile.name}_{filename_prefix}.stl"
+    #     getattr(gridfinity_generator, filename_prefix)(
+    #         columns=cols, rows=rows, output_filename=filename
+    #     )
         figure = create_stl_figure(filename)
         name = f"gridfinity_{filename_prefix}_{cols}_{rows}_{filename_prefix}.stl".split("/")[-1]
 
     return {"figure": figure, "path": filename, "name": name}
 
 
+# @st.cache_data(max_entries=10, ttl=180)
+# def process_user_input(cols: int, rows: int, /) -> dict:
+#     """Process user input to generate figures and return them.
+
+#     Args:
+#     - cols (int): Number of columns.
+#     - rows (int): Number of rows.
+#     Returns:
+#     - dict: A dictionary containing figures.
+#     """
+
+#     figs = {}
+#     figs["bottom"] = generate_and_process("bottom", cols, rows)
+#     figs["base"] = generate_and_process("base", cols, rows)
+
+#     return figs
+
+
 @st.cache_data(max_entries=10, ttl=180)
-def process_user_input(cols: int, rows: int, /) -> dict:
+def process_user_input(cols: int | None = None, rows: int | None = None, width: float | None = None, length: float | None = None) -> dict:
     """Process user input to generate figures and return them.
 
     Args:
-    - cols (int): Number of columns.
-    - rows (int): Number of rows.
+    - cols (int, optional): Number of columns.
+    - rows (int, optional): Number of rows.
+    - width (float, optional): Width in millimeters.
+    - length (float, optional): Length in millimeters.
+
     Returns:
     - dict: A dictionary containing figures.
     """
 
     figs = {}
-    figs["bottom"] = generate_and_process("bottom", cols, rows)
-    figs["base"] = generate_and_process("base", cols, rows)
+    if cols and rows:
+        figs["bottom"] = generate_and_process("bottom", cols=cols, rows=rows)
+        figs["base"] = generate_and_process("base", cols=cols, rows=rows)
+    elif width and length:
+        figs["bottom"] = generate_and_process("bottom", width=width, length=length)
+        figs["base"] = generate_and_process("base", width=width, length=length)
 
     return figs
 
@@ -97,14 +140,24 @@ def main():
     )
 
     st.subheader("Parameters")
-    st.write("Here you can set the number of rows and columns")
-    with st.form("number_select_form"):
+    st.write("use either of the forms to generate the grid")
+    with st.form("cols_rows_select_form"):
+        st.subheader("Generate using columns and rows")
+        st.text("With this form you can generate the grid using number of columns and rows")
         rows = st.select_slider("rows", options=range(1, 51))
         cols = st.select_slider("columns", options=range(1, 51))
         if st.form_submit_button("Generate!"):
-            # Only generate figures if they aren't in the session state or if rows/cols have changed
-            if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
-                st.session_state.figs = process_user_input(*sorted([rows, cols]))
+            params = {'cols': cols, 'rows': rows}
+    with st.form("widht_length_select_form"):
+        st.subheader("Generate using columns and rows")
+        st.text("With this form you can generate the grid using number of width and length in millimeters")
+        width = st.number_input("Width", min_value=0.1, max_value=1000.0, step=0.1)
+        length = st.number_input("Length", min_value=0.1, max_value=1000.0, step=0.1)
+        if st.form_submit_button("Generate!"):
+            params = {'width': width, 'length': length}
+    # Only generate figures if they aren't in the session state or if width/length have changed
+    if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
+        st.session_state.figs = process_user_input(**params)
 
     st.subheader("Preview")
     if st.session_state.figs:

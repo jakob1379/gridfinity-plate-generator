@@ -87,8 +87,10 @@ def create_grid_squares(
 
 
 def base(
-    columns: int = default_columns,
-    rows: int = default_rows,
+    columns: int | None = None,
+    rows: int | None = None,
+    width: float | None = None,
+    length: float | None = None,
     output_filename: str | None = default_output_filename,
     baseplate_width: float = default_baseplate_width,
     subtracted_square_width: float = default_subtracted_square_width,
@@ -99,6 +101,16 @@ def base(
     verbose: bool = default_verbose,
 ):
     setup_logging(verbose)
+
+    if (columns is not None and rows is not None) and (width is None and length is None):
+        # Calculate based on columns and rows
+        pass
+    elif (width is not None and length is not None) and (columns is None and rows is None):
+        # Calculate based on width and length
+        columns = int(width / baseplate_width)
+        rows = int(length / baseplate_width)
+    else:
+        raise ValueError("Specify either (columns, rows) or (width, length), not both.")
 
     combined_grid_squares = create_grid_squares(
         baseplate_height,
@@ -138,8 +150,10 @@ def base(
 
 
 def bottom(
-    columns: int = default_columns,
-    rows: int = default_rows,
+    columns: int | None = None,
+    rows: int | None = None,
+    width: float | None = None,
+    length: float | None = None,
     output_filename: str | None = default_output_filename,
     baseplate_width: float = default_baseplate_width,
     subtracted_square_width: float = default_subtracted_square_width,
@@ -150,6 +164,28 @@ def bottom(
     verbose: bool = default_verbose,
 ):
     setup_logging(verbose)
+    from rich import inspect
+    inspect((
+        baseplate_height,
+        bottom_chamfer_height,
+        straight_wall_height,
+        subtracted_square_width,
+        rounded_corner_radius,
+        baseplate_width,
+        columns,
+        rows,
+    ))
+
+    if (columns is not None and rows is not None) and (width is None and length is None):
+        # Calculate based on columns and rows
+        pass
+    elif (width is not None and length is not None) and (columns is None and rows is None):
+        # Calculate based on width and length
+        columns = int(width / default_baseplate_width)
+        rows = int(length / default_baseplate_width)
+    else:
+        raise ValueError("Specify either (columns, rows) or (width, length), not both.")
+
 
     combined_grid_squares = create_grid_squares(
         baseplate_height,
