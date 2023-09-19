@@ -32,4 +32,4 @@ test:
 	poetry run bash -c "coverage run -m pytest -v && coverage xml"
 
 run:
-	poetry run streamlit run src/gridfinity_plate_generator/app.py
+	poetry run streamlit run gridfinity_plate_generator/app.py
