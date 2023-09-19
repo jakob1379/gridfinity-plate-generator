@@ -12,7 +12,7 @@ classifiers = [
 	"Development Status :: 1 - Planning",
 ]
 packages = [
-	{ include = "gridfinity_plate_generator", from = "src" },
+	{ include = "gridfinity_plate_generator", from = "." },
 ]
 
 
@@ -75,7 +75,7 @@ pylsp-rope = "^0.1.11"
 mypy = "^1.5.1"
 
 [tool.coverage.paths]
-source = ["src", "*/site-packages"]
+source = ["./gridfinity_plate_generator"]
 tests = ["tests", "*/tests"]
 
 [tool.coverage.run]
