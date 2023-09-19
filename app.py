@@ -132,32 +132,58 @@ def process_user_input(cols: int | None = None, rows: int | None = None, width: 
     return figs
 
 
+# def main():
+#     """Main function to run the Streamlit app."""
+#     st.title("Gridfinity Button and Base Generator")
+#     st.markdown(
+#         "Welcome! This tool allows you to create any sized gridfinity base plates or buttons, which you can use to attach to your designs for them to fit into the gridfinity universe. Simply choose the number of rows and columns and download your print-ready STL files!"
+#     )
+
+#     st.subheader("Parameters")
+#     st.write("use either of the forms to generate the grid")
+#     with st.form("cols_rows_select_form"):
+#         st.subheader("Generate using columns and rows")
+#         st.text("With this form you can generate the grid using number of columns and rows")
+#         rows = st.select_slider("rows", options=range(1, 51))
+#         cols = st.select_slider("columns", options=range(1, 51))
+#         if st.form_submit_button("Generate!"):
+#             params = {'cols': cols, 'rows': rows}
+#     with st.form("widht_length_select_form"):
+#         st.subheader("Generate using columns and rows")
+#         st.text("With this form you can generate the grid using number of width and length in millimeters")
+#         width = st.number_input("Width", min_value=0.1, max_value=1000.0, step=0.1)
+#         length = st.number_input("Length", min_value=0.1, max_value=1000.0, step=0.1)
+#         if st.form_submit_button("Generate!"):
+#             params = {'width': width, 'length': length}
 def main():
     """Main function to run the Streamlit app."""
-    st.title("Gridfinity Button and Base Generator")
+    st.title("Gridfinity Button and Base Generator 🌐")
     st.markdown(
-        "Welcome! This tool allows you to create any sized gridfinity base plates or buttons, which you can use to attach to your designs for them to fit into the gridfinity universe. Simply choose the number of rows and columns and download your print-ready STL files!"
+        "Welcome! 👋 This tool lets you create custom-sized Gridfinity base plates 🛠️ and buttons 🔘. Integrate them into your own designs and join the Gridfinity universe! 🌌 Simply choose your dimensions below and download your ready-to-print STL files! 🖨️"
     )
 
-    st.subheader("Parameters")
-    st.write("use either of the forms to generate the grid")
+    st.subheader("Parameters 🛠️")
+    st.write("👇 Use either of the forms below to create your grid! 👇")
+    params = {}
     with st.form("cols_rows_select_form"):
-        st.subheader("Generate using columns and rows")
-        st.text("With this form you can generate the grid using number of columns and rows")
-        rows = st.select_slider("rows", options=range(1, 51))
-        cols = st.select_slider("columns", options=range(1, 51))
-        if st.form_submit_button("Generate!"):
+        st.subheader("Generate using Columns and Rows 📊")
+        st.text("With this form, you can generate your grid by specifying the number of columns 📈 and rows 📉.")
+        rows = st.select_slider("Rows 📏", options=range(1, 51))
+        cols = st.select_slider("Columns 📏", options=range(1, 51))
+        if st.form_submit_button("Generate! 🚀"):
             params = {'cols': cols, 'rows': rows}
-    with st.form("widht_length_select_form"):
-        st.subheader("Generate using columns and rows")
-        st.text("With this form you can generate the grid using number of width and length in millimeters")
-        width = st.number_input("Width", min_value=0.1, max_value=1000.0, step=0.1)
-        length = st.number_input("Length", min_value=0.1, max_value=1000.0, step=0.1)
-        if st.form_submit_button("Generate!"):
+
+    with st.form("width_length_select_form"):
+        st.subheader("Generate using Width and Length 📐")
+        st.text("With this form, you can generate your grid using the width 📏 and length 📏 in millimeters.")
+        width = st.number_input("Width (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
+        length = st.number_input("Length (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
+        if st.form_submit_button("Generate! 🚀"):
             params = {'width': width, 'length': length}
     # Only generate figures if they aren't in the session state or if width/length have changed
     if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
-        st.session_state.figs = process_user_input(**params)
+        if ('cols' in params and 'rows' in params) or ('width' in params and 'length' in params):
+            st.session_state.figs = process_user_input(**params)
 
     st.subheader("Preview")
     if st.session_state.figs:
