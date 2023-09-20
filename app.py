@@ -88,25 +88,6 @@ def generate_and_process(
 
     return {"figure": figure, "path": filename, "name": name}
 
-
-# @st.cache_data(max_entries=10, ttl=180)
-# def process_user_input(cols: int, rows: int, /) -> dict:
-#     """Process user input to generate figures and return them.
-
-#     Args:
-#     - cols (int): Number of columns.
-#     - rows (int): Number of rows.
-#     Returns:
-#     - dict: A dictionary containing figures.
-#     """
-
-#     figs = {}
-#     figs["bottom"] = generate_and_process("bottom", cols, rows)
-#     figs["base"] = generate_and_process("base", cols, rows)
-
-#     return figs
-
-
 @st.cache_data(max_entries=10, ttl=180)
 def process_user_input(cols: int | None = None, rows: int | None = None, width: float | None = None, length: float | None = None) -> dict:
     """Process user input to generate figures and return them.
@@ -131,35 +112,11 @@ def process_user_input(cols: int | None = None, rows: int | None = None, width: 
 
     return figs
 
-
-# def main():
-#     """Main function to run the Streamlit app."""
-#     st.title("Gridfinity Button and Base Generator")
-#     st.markdown(
-#         "Welcome! This tool allows you to create any sized gridfinity base plates or buttons, which you can use to attach to your designs for them to fit into the gridfinity universe. Simply choose the number of rows and columns and download your print-ready STL files!"
-#     )
-
-#     st.subheader("Parameters")
-#     st.write("use either of the forms to generate the grid")
-#     with st.form("cols_rows_select_form"):
-#         st.subheader("Generate using columns and rows")
-#         st.text("With this form you can generate the grid using number of columns and rows")
-#         rows = st.select_slider("rows", options=range(1, 51))
-#         cols = st.select_slider("columns", options=range(1, 51))
-#         if st.form_submit_button("Generate!"):
-#             params = {'cols': cols, 'rows': rows}
-#     with st.form("widht_length_select_form"):
-#         st.subheader("Generate using columns and rows")
-#         st.text("With this form you can generate the grid using number of width and length in millimeters")
-#         width = st.number_input("Width", min_value=0.1, max_value=1000.0, step=0.1)
-#         length = st.number_input("Length", min_value=0.1, max_value=1000.0, step=0.1)
-#         if st.form_submit_button("Generate!"):
-#             params = {'width': width, 'length': length}
 def main():
     """Main function to run the Streamlit app."""
-    st.title("Gridfinity Button and Base Generator 🌐")
+    st.title("Gridfinity Bottom and Base Generator 🌐")
     st.markdown(
-        "Welcome! 👋 This tool lets you create custom-sized Gridfinity base plates 🛠️ and buttons 🔘. Integrate them into your own designs and join the Gridfinity universe! 🌌 Simply choose your dimensions below and download your ready-to-print STL files! 🖨️"
+        "Welcome! 👋 This tool lets you create custom-sized Gridfinity base plates and bottoms. Integrate them into your own designs and join the Gridfinity universe! 🌌 Simply choose your dimensions below and download your ready-to-print STL files! 🖨️"
     )
 
     st.subheader("Parameters 🛠️")
