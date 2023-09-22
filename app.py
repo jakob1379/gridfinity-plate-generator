@@ -8,8 +8,12 @@ import logging
 from gridfinity_plate_generator import gridfinity_generator
 
 # Configure logging to write logs to a file
-logging.basicConfig(filename='gridfinity.log', level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(
+    filename="gridfinity.log",
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 version = "0.1.0"
 SUPPORT_MAIL = "jakob1379@gmail.com"
@@ -53,12 +57,14 @@ def create_stl_figure(file_name: str) -> go.Figure:
 
     return fig
 
+
 def generate_and_process(
-        filename_prefix: str,
-        cols: int | None = None,
-        rows: int | None = None,
-        width: float | None = None,
-        length: float | None = None) -> dict:
+    filename_prefix: str,
+    cols: int | None = None,
+    rows: int | None = None,
+    width: float | None = None,
+    length: float | None = None,
+) -> dict:
     """Generate and process the STL files.
 
     Args:
@@ -69,7 +75,9 @@ def generate_and_process(
     Returns:
     - dict: A dictionary containing figure, path, and name.
     """
-    logging.info(f"Generating {filename_prefix} with cols={cols}, rows={rows}, width={width}, length={length}")
+    logging.info(
+        f"Generating {filename_prefix} with cols={cols}, rows={rows}, width={width}, length={length}"
+    )
 
     with tempfile.NamedTemporaryFile() as tmpfile:
         filename = f"{tmpfile.name}_{filename_prefix}.stl"
@@ -83,19 +91,20 @@ def generate_and_process(
                 width=width, length=length, output_filename=filename
             )
 
-    # with tempfile.NamedTemporaryFile() as tmpfile:
-    #     filename = f"{tmpfile.name}_{filename_prefix}.stl"
-    #     getattr(gridfinity_generator, filename_prefix)(
-    #         columns=cols, rows=rows, output_filename=filename
-    #     )
         figure = create_stl_figure(filename)
         name = f"gridfinity_{filename_prefix}_{cols}_{rows}_{filename_prefix}.stl".split("/")[-1]
 
     logging.debug(f"Generated file saved at {filename}")
     return {"figure": figure, "path": filename, "name": name}
 
+
 @st.cache_data(max_entries=10, ttl=180)
-def process_user_input(cols: int | None = None, rows: int | None = None, width: float | None = None, length: float | None = None) -> dict:
+def process_user_input(
+    cols: int | None = None,
+    rows: int | None = None,
+    width: float | None = None,
+    length: float | None = None,
+) -> dict:
     """Process user input to generate figures and return them.
 
     Args:
@@ -118,6 +127,7 @@ def process_user_input(cols: int | None = None, rows: int | None = None, width: 
 
     return figs
 
+
 def main():
     """Main function to run the Streamlit app."""
     logging.info("Starting Gridfinity Bottom and Base Generator 🌐")
@@ -131,24 +141,28 @@ def main():
     params = {}
     with st.form("cols_rows_select_form"):
         st.subheader("Generate using Columns and Rows 📊")
-        st.text("With this form, you can generate your grid by specifying the number of columns 📈 and rows 📉.")
+        st.text(
+            "With this form, you can generate your grid by specifying the number of columns 📈 and rows 📉."
+        )
         rows = st.select_slider("Rows 📏", options=range(1, 51))
         cols = st.select_slider("Columns 📏", options=range(1, 51))
         if st.form_submit_button("Generate! 🚀"):
             logging.info("Generate button clicked.")
-            params = {'cols': cols, 'rows': rows}
+            params = {"cols": cols, "rows": rows}
 
     with st.form("width_length_select_form"):
         st.subheader("Generate using Width and Length 📐")
-        st.text("With this form, you can generate your grid using the width 📏 and length 📏 in millimeters.")
+        st.text(
+            "With this form, you can generate your grid using the width 📏 and length 📏 in millimeters."
+        )
         width = st.number_input("Width (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
         length = st.number_input("Length (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
         if st.form_submit_button("Generate! 🚀"):
             logging.info("Generate button clicked.")
-            params = {'width': width, 'length': length}
+            params = {"width": width, "length": length}
     # Only generate figures if they aren't in the session state or if width/length have changed
     if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
-        if ('cols' in params and 'rows' in params) or ('width' in params and 'length' in params):
+        if ("cols" in params and "rows" in params) or ("width" in params and "length" in params):
             st.session_state.figs = process_user_input(**params)
 
     st.subheader("Preview")
@@ -165,7 +179,7 @@ def main():
                     file_name=st.session_state.figs[plate]["name"],
                 )
     else:
-        st.text("You need to press the \"Generate!\"")
+        st.text('You need to press the "Generate!"')
 
 
 if __name__ == "__main__":
