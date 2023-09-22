@@ -98,7 +98,7 @@ def generate_and_process(
     return {"figure": figure, "path": filename, "name": name}
 
 
-@st.cache_data(max_entries=10, ttl=180)
+@st.cache_data(max_entries=5, ttl=60)
 def process_user_input(
     cols: int | None = None,
     rows: int | None = None,
