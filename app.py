@@ -4,8 +4,12 @@ import numpy as np
 import plotly.graph_objects as go
 import stl
 import streamlit as st
-
+import logging
 from gridfinity_plate_generator import gridfinity_generator
+
+# Configure logging to write logs to a file
+logging.basicConfig(filename='gridfinity.log', level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 version = "0.1.0"
 SUPPORT_MAIL = "jakob1379@gmail.com"
@@ -65,6 +69,7 @@ def generate_and_process(
     Returns:
     - dict: A dictionary containing figure, path, and name.
     """
+    logging.info(f"Generating {filename_prefix} with cols={cols}, rows={rows}, width={width}, length={length}")
 
     with tempfile.NamedTemporaryFile() as tmpfile:
         filename = f"{tmpfile.name}_{filename_prefix}.stl"
@@ -86,6 +91,7 @@ def generate_and_process(
         figure = create_stl_figure(filename)
         name = f"gridfinity_{filename_prefix}_{cols}_{rows}_{filename_prefix}.stl".split("/")[-1]
 
+    logging.debug(f"Generated file saved at {filename}")
     return {"figure": figure, "path": filename, "name": name}
 
 @st.cache_data(max_entries=10, ttl=180)
@@ -114,6 +120,7 @@ def process_user_input(cols: int | None = None, rows: int | None = None, width: 
 
 def main():
     """Main function to run the Streamlit app."""
+    logging.info("Starting Gridfinity Bottom and Base Generator 🌐")
     st.title("Gridfinity Bottom and Base Generator 🌐")
     st.markdown(
         "Welcome! 👋 This tool lets you create custom-sized Gridfinity base plates and bottoms. Integrate them into your own designs and join the Gridfinity universe! 🌌 Simply choose your dimensions below and download your ready-to-print STL files! 🖨️"
@@ -128,6 +135,7 @@ def main():
         rows = st.select_slider("Rows 📏", options=range(1, 51))
         cols = st.select_slider("Columns 📏", options=range(1, 51))
         if st.form_submit_button("Generate! 🚀"):
+            logging.info("Generate button clicked.")
             params = {'cols': cols, 'rows': rows}
 
     with st.form("width_length_select_form"):
@@ -136,6 +144,7 @@ def main():
         width = st.number_input("Width (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
         length = st.number_input("Length (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
         if st.form_submit_button("Generate! 🚀"):
+            logging.info("Generate button clicked.")
             params = {'width': width, 'length': length}
     # Only generate figures if they aren't in the session state or if width/length have changed
     if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
@@ -143,7 +152,9 @@ def main():
             st.session_state.figs = process_user_input(**params)
 
     st.subheader("Preview")
+    st.text("This section will preview the generated model")
     if st.session_state.figs:
+        logging.info("Displaying generated figures.")
         for plate, col in zip(["bottom", "base"], st.columns(2)):
             col.plotly_chart(st.session_state.figs[plate]["figure"], use_container_width=True)
             with open(st.session_state.figs[plate]["path"], "rb") as f:
@@ -154,7 +165,7 @@ def main():
                     file_name=st.session_state.figs[plate]["name"],
                 )
     else:
-        st.write("Use the panel to the left to specify a grid size and preview here!")
+        st.text("You need to press the \"Generate!\"")
 
 
 if __name__ == "__main__":
