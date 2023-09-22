@@ -67,11 +67,11 @@ def create_grid_squares(
     )
 
     logging.info("Determining grid square positions...")
-    grid_square_positions = [
+    grid_square_positions = (
         (x * baseplate_width, y * baseplate_width)
         for x in range(0, columns)
         for y in range(0, rows)
-    ]
+    )
 
     logging.info("Combining grid squares for subtraction...")
     combined_grid_squares = (
@@ -164,17 +164,6 @@ def bottom(
     verbose: bool = default_verbose,
 ):
     setup_logging(verbose)
-    from rich import inspect
-    inspect((
-        baseplate_height,
-        bottom_chamfer_height,
-        straight_wall_height,
-        subtracted_square_width,
-        rounded_corner_radius,
-        baseplate_width,
-        columns,
-        rows,
-    ))
 
     if (columns is not None and rows is not None) and (width is None and length is None):
         # Calculate based on columns and rows
