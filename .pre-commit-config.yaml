@@ -33,13 +33,6 @@ repos:
         language: system
         types: [text]
         stages: [commit, push, manual]
-      - id: flake8
-        name: flake8
-        entry: flake8
-        language: system
-        types: [python]
-        require_serial: true
-        args: [--darglint-ignore-regex, .*]
       - id: isort
         name: isort
         entry: isort
@@ -61,6 +54,10 @@ repos:
         types: [text]
         stages: [commit, push, manual]
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.6.0
+    rev: v3.0.3
     hooks:
       - id: prettier
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.5.1" # Use the sha / tag you want to point at
+    hooks:
+      - id: mypy

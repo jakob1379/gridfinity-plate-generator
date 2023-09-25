@@ -1,14 +1,16 @@
 import logging
 import math
 import os
+from typing import Any
 
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
 
 # Load and log environment variables
-def get_env_variable(var_name, default=None, required=False):
+def get_env_variable(var_name: str, default: Any = None, required: bool = False) -> Any:
     value = os.environ.get(var_name, default)
     if value:
         logging.debug(f"{var_name} loaded successfully.")

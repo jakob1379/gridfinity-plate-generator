@@ -1,46 +1,67 @@
+"""User interface to create gridfinity models with gridfinity_plate_generator module."""
+
+import logging
 import tempfile
+from pathlib import Path
 
 import numpy as np
 import plotly.graph_objects as go
 import stl
 import streamlit as st
-import logging
+
 from gridfinity_plate_generator import gridfinity_generator
 
-# Configure logging to write logs to a file
+
+# configure logging to write logs to a file
 logging.basicConfig(
     filename="gridfinity.log",
     level=logging.DEBUG,
     format="%(asctime)s %(levelname)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
+    datefmt="%y-%m-%d %h:%m:%s",
 )
 
 version = "0.1.0"
-SUPPORT_MAIL = "jakob1379@gmail.com"
-params = {}
+support_mail = "jakob1379@gmail.com"
+params: dict[str, int | float] = {}
 
 if "figs" not in st.session_state:
     st.session_state.figs = {}
 
 st.markdown(
     f"""
-<footer style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: white; color: gray; text-align: center;">
-<p> ✨ Made by JGA ✨ | Running version {version} | For bug reports 🪲, questions ❓, or feedback 💭, please <a href="https://github.com/jakob1379/gridfinity-plate-generator/issues/">create an issue</a>.</p>
+<footer style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: white;
+color: gray; text-align: center;"> <p> ✨ made by jga ✨ | running version {version} |
+for bug reports 🪲, questions ❓, or feedback 💭, please
+<a href="https://github.com/jakob1379/gridfinity-plate-generator/issues/">create an issue</a>.</p>
 </footer>
 """,
     unsafe_allow_html=True,
 )
 
+st.markdown(
+    f"""
+    <footer style="position: fixed; left: 0; bottom: 0; width: 100%;
+    background-color: white; color: gray; text-align: center;">
+    <p> ✨ made by jga ✨ | running version {version} |
+    for bug reports 🪲, questions ❓, or feedback 💭,
+    please <a href="https://github.com/jakob1379/gridfinity-plate-generator/issues/">
+    create an issue</a>.</p>
+    </footer>
+    """,
+    unsafe_allow_html=True,
+)
 
-def create_stl_figure(file_name: str) -> go.Figure:
-    """Create a 3D figure from an STL file.
 
-    Args:
+def create_stl_figure(file_name: str) -> go.figure:
+    """create a 3d figure from an stl file.
+
+    args:
     - file_name (str): The path to the STL file.
 
     Returns:
     - go.Figure: A Plotly 3D mesh figure representing the STL.
     """
+
     mesh = stl.mesh.Mesh.from_file(file_name)
 
     reshaped_vectors = mesh.vectors.reshape(-1, 3)
@@ -64,7 +85,7 @@ def generate_and_process(
     rows: int | None = None,
     width: float | None = None,
     length: float | None = None,
-) -> dict:
+) -> dict[str, go.Figure | Path | str]:
     """Generate and process the STL files.
 
     Args:
@@ -98,13 +119,13 @@ def generate_and_process(
     return {"figure": figure, "path": filename, "name": name}
 
 
-@st.cache_data(max_entries=5, ttl=60)
+@st.cache_data(max_entries=5, ttl=60)  # type: ignore
 def process_user_input(
     cols: int | None = None,
     rows: int | None = None,
     width: float | None = None,
     length: float | None = None,
-) -> dict:
+) -> dict[str, go.Figure]:
     """Process user input to generate figures and return them.
 
     Args:
@@ -128,7 +149,7 @@ def process_user_input(
     return figs
 
 
-def main():
+def main() -> None:
     """Main function to run the Streamlit app."""
     logging.info("Starting Gridfinity Bottom and Base Generator 🌐")
     st.title("Gridfinity Bottom and Base Generator 🌐")
@@ -138,7 +159,6 @@ def main():
 
     st.subheader("Parameters 🛠️")
     st.write("👇 Use either of the forms below to create your grid! 👇")
-    params = {}
     with st.form("cols_rows_select_form"):
         st.subheader("Generate using Columns and Rows 📊")
         st.text(
@@ -155,8 +175,8 @@ def main():
         st.text(
             "With this form, you can generate your grid using the width 📏 and length 📏 in millimeters."
         )
-        width = st.number_input("Width (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
-        length = st.number_input("Length (mm) 📏", min_value=0.1, max_value=1000.0, step=0.1)
+        width = st.number_input("Width (mm) 📏", min_value=0, max_value=1000.0, step=5)
+        length = st.number_input("Length (mm) 📏", min_value=0, max_value=1000.0, step=5)
         if st.form_submit_button("Generate! 🚀"):
             logging.info("Generate button clicked.")
             params = {"width": width, "length": length}

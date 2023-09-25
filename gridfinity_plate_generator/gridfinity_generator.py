@@ -2,26 +2,24 @@ import logging
 import math
 
 import cadquery as cq
-
 import typer
 
-from gridfinity_plate_generator.config import (
-    default_baseplate_height,
-    default_baseplate_width,
-    default_bottom_chamfer_height,
-    default_columns,
-    default_output_filename,
-    default_rounded_corner_radius,
-    default_rows,
-    default_straight_wall_height,
-    default_subtracted_square_width,
-    default_verbose,
-)
+from gridfinity_plate_generator.config import default_baseplate_height
+from gridfinity_plate_generator.config import default_baseplate_width
+from gridfinity_plate_generator.config import default_bottom_chamfer_height
+from gridfinity_plate_generator.config import default_columns
+from gridfinity_plate_generator.config import default_output_filename
+from gridfinity_plate_generator.config import default_rounded_corner_radius
+from gridfinity_plate_generator.config import default_rows
+from gridfinity_plate_generator.config import default_straight_wall_height
+from gridfinity_plate_generator.config import default_subtracted_square_width
+from gridfinity_plate_generator.config import default_verbose
+
 
 app = typer.Typer()
 
 
-def setup_logging(verbose: bool):
+def setup_logging(verbose: bool) -> None:
     """Set up logging based on the verbose flag."""
     logging.basicConfig(
         format="[%(levelname)s]: %(message)s",
@@ -30,15 +28,15 @@ def setup_logging(verbose: bool):
 
 
 def create_grid_squares(
-    baseplate_height,
-    bottom_chamfer_height,
-    straight_wall_height,
-    subtracted_square_width,
-    rounded_corner_radius,
-    baseplate_width,
-    columns,
-    rows,
-):
+    baseplate_height: float | int,
+    bottom_chamfer_height: float | int,
+    straight_wall_height: float | int,
+    subtracted_square_width: float | int,
+    rounded_corner_radius: float | int,
+    baseplate_width: float | int,
+    columns: int,
+    rows: int,
+) -> cq.Workplane:
     top_chamfer_height = baseplate_height - bottom_chamfer_height - straight_wall_height
 
     logging.info("Creating 2D sketch with rounded corners for grid squares...")
@@ -83,6 +81,7 @@ def create_grid_squares(
             clean=True,
         )
     )
+
     return combined_grid_squares
 
 
@@ -99,7 +98,7 @@ def base(
     bottom_chamfer_height: float = default_bottom_chamfer_height,
     straight_wall_height: float = default_straight_wall_height,
     verbose: bool = default_verbose,
-):
+) -> cq.Workplane:
     setup_logging(verbose)
 
     if (columns is not None and rows is not None) and (width is None and length is None):
@@ -162,7 +161,7 @@ def bottom(
     bottom_chamfer_height: float = default_bottom_chamfer_height,
     straight_wall_height: float = default_straight_wall_height,
     verbose: bool = default_verbose,
-):
+) -> cq.Workplane:
     setup_logging(verbose)
 
     if (columns is not None and rows is not None) and (width is None and length is None):
@@ -174,7 +173,6 @@ def bottom(
         rows = int(length / default_baseplate_width)
     else:
         raise ValueError("Specify either (columns, rows) or (width, length), not both.")
-
 
     combined_grid_squares = create_grid_squares(
         baseplate_height,
