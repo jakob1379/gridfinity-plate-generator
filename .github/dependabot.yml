@@ -4,15 +4,15 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-  - package-ecosystem: pip
+  - package-ecosystem: poetry
     directory: "/.github/workflows"
     schedule:
       interval: daily
-  - package-ecosystem: pip
+  - package-ecosystem: poetry
     directory: "/docs"
     schedule:
       interval: daily
-  - package-ecosystem: pip
+  - package-ecosystem: poetry
     directory: "/"
     schedule:
       interval: daily
