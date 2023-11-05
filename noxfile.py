@@ -23,7 +23,7 @@ except ImportError:
 
 
 package = "gridfinity_plate_generator"
-python_versions = ["3.10", "3.9", "3.8", "3.7"]
+python_versions = ["3.11"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
@@ -109,7 +109,6 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
                 hook.write_text("\n".join(lines))
                 break
 
-
 @session(name="pre-commit", python=python_versions[0])
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
@@ -137,14 +136,12 @@ def precommit(session: Session) -> None:
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
 
-
 @session(python=python_versions[0])
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
     session.install("safety")
     session.run("safety", "check", "--full-report", f"--file={requirements}")
-
 
 @session(python=python_versions)
 def mypy(session: Session) -> None:
