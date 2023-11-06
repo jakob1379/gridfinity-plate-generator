@@ -52,7 +52,7 @@ st.markdown(
 )
 
 
-def create_stl_figure(file_name: str) -> go.figure:
+def create_stl_figure(file_name: str) -> go.Figure:
     """create a 3d figure from an stl file.
 
     args:
@@ -159,6 +159,9 @@ def main() -> None:
 
     st.subheader("Parameters 🛠️")
     st.write("👇 Use either of the forms below to create your grid! 👇")
+
+    params = {}
+
     with st.form("cols_rows_select_form"):
         st.subheader("Generate using Columns and Rows 📊")
         st.text(
@@ -175,29 +178,31 @@ def main() -> None:
         st.text(
             "With this form, you can generate your grid using the width 📏 and length 📏 in millimeters."
         )
-        width = st.number_input("Width (mm) 📏", min_value=0, max_value=1000.0, step=5)
-        length = st.number_input("Length (mm) 📏", min_value=0, max_value=1000.0, step=5)
+        width = st.number_input("Width (mm) 📏", min_value=0.0, max_value=1000.0, step=5.0)
+        length = st.number_input("Length (mm) 📏", min_value=0.0, max_value=1000.0, step=5.0)
         if st.form_submit_button("Generate! 🚀"):
             logging.info("Generate button clicked.")
             params = {"width": width, "length": length}
-    # Only generate figures if they aren't in the session state or if width/length have changed
-    if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
-        if ("cols" in params and "rows" in params) or ("width" in params and "length" in params):
-            st.session_state.figs = process_user_input(**params)
 
-    st.subheader("Preview")
-    st.text("This section will preview the generated model")
-    if st.session_state.figs:
-        logging.info("Displaying generated figures.")
-        for plate, col in zip(["bottom", "base"], st.columns(2)):
-            col.plotly_chart(st.session_state.figs[plate]["figure"], use_container_width=True)
-            with open(st.session_state.figs[plate]["path"], "rb") as f:
-                col.download_button(
-                    label=f"Download {plate} plate",
-                    data=f,
-                    mime="model/stl",
-                    file_name=st.session_state.figs[plate]["name"],
-                )
+    # Only generate figures if they aren't in the session state or if width/length have changed
+    if params:
+        if "fig_rows" not in st.session_state or "fig_cols" not in st.session_state:
+            if ("cols" in params and "rows" in params) or ("width" in params and "length" in params):
+                st.session_state.figs = process_user_input(**params)
+
+        st.subheader("Preview")
+        st.text("This section will preview the generated model")
+        if st.session_state.figs:
+            logging.info("Displaying generated figures.")
+            for plate, col in zip(["bottom", "base"], st.columns(2)):
+                col.plotly_chart(st.session_state.figs[plate]["figure"], use_container_width=True)
+                with open(st.session_state.figs[plate]["path"], "rb") as f:
+                    col.download_button(
+                        label=f"Download {plate} plate",
+                        data=f,
+                        mime="model/stl",
+                        file_name=st.session_state.figs[plate]["name"],
+                    )
     else:
         st.text('You need to press the "Generate!"')
 
