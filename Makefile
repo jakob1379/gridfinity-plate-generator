@@ -1,7 +1,6 @@
 .PHONY: install install-all update-deps upgrade run build clean deploy bump test run
 
 # You can set ?= variables from the command line.
-SHELL = /bin/bash
 COMPOSE_PROJECT_NAME ?= gridfinity-plate-generator
 
 install-all: install build
