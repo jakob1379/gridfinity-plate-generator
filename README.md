@@ -6,7 +6,6 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/gridfinity-plate-generator)][python version]
 [![License](https://img.shields.io/pypi/l/gridfinity-plate-generator)][license]
 
-[![Read the documentation at https://gridfinity-plate-generator.readthedocs.io/](https://img.shields.io/readthedocs/gridfinity-plate-generator/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![Tests](https://github.com/jakob1379/gridfinity-plate-generator/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/jakob1379/gridfinity-plate-generator/branch/main/graph/badge.svg)][codecov]
 
@@ -37,10 +36,6 @@ You can install _Gridfinity Plate Generator_ via [pip] from [PyPI]:
 ```console
 $ pip install gridfinity-plate-generator
 ```
-
-## Usage
-
-Please see the [Command-line Reference] for details.
 
 ## Contributing
 

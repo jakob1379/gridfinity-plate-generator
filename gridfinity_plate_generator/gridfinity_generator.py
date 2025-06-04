@@ -2,7 +2,6 @@ import logging
 import math
 
 import cadquery as cq
-import typer
 
 from gridfinity_plate_generator.config import default_baseplate_height
 from gridfinity_plate_generator.config import default_baseplate_width
@@ -14,17 +13,13 @@ from gridfinity_plate_generator.config import default_subtracted_square_width
 from gridfinity_plate_generator.config import default_verbose
 
 
-app = typer.Typer()
-
-
 def setup_logging(verbose: bool) -> None:
     """Set up logging based on the verbose flag."""
     logging.basicConfig(
         format="[%(levelname)s]: %(message)s",
         level=logging.DEBUG if verbose else logging.WARNING,
     )
-
-
+    
 def create_grid_squares(
     baseplate_height: float | int,
     bottom_chamfer_height: float | int,
@@ -81,7 +76,6 @@ def create_grid_squares(
     )
 
     return combined_grid_squares
-
 
 def base(
     columns: int | None = None,
@@ -145,7 +139,6 @@ def base(
 
     return gridfinity_baseplate
 
-
 def bottom(
     columns: int | None = None,
     rows: int | None = None,
@@ -193,5 +186,3 @@ def bottom(
     return combined_grid_squares
 
 
-if __name__ == "__main__":
-    app()

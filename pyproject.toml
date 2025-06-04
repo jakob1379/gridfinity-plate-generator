@@ -24,9 +24,6 @@ Repository = "https://github.com/jakob1379/gridfinity-plate-generator"
 # Documentation = "https://gridfinity-plate-generator.readthedocs.io"
 Changelog = "https://github.com/jakob1379/gridfinity-plate-generator/releases"
 
-[project.scripts]
-gridfinity-generator = "gridfinity_plate_generator.__main__:app"
-
 [tool.hatch.build.targets.sdist]
 include = ["./gridfinity_plate_generator"]
 
@@ -45,6 +42,7 @@ dev = [
     "isort>=6.0.1",
     "poethepoet>=0.34.0",
     "pre-commit>=4.2.0",
+    "pytest>=8.4.0",
     "ruff>=0.11.12",
 ]
 jga-dev = [
