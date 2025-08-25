@@ -47,7 +47,6 @@ To learn more, see the [Contributor Guide].
 Distributed under the terms of the [MIT license][license],
 _Gridfinity Plate Generator_ is free and open source software.
 
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjakob1379%2Fgridfinity-plate-generator.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjakob1379%2Fgridfinity-plate-generator?ref=badge_large)
 
 ## Issues

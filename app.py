@@ -5,7 +5,9 @@ import os
 import tempfile
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, Optional, Tuple
+from typing import Dict
+from typing import Optional
+from typing import Tuple
 
 import numpy as np
 import plotly.graph_objects as go
@@ -13,6 +15,7 @@ import stl
 import streamlit as st
 
 from gridfinity_plate_generator import gridfinity_generator
+
 
 # Constants
 VERSION = "0.1.0"
@@ -52,8 +55,8 @@ def setup_page() -> None:
     st.markdown(
         """Welcome!
 
-        This tool lets you create custom-sized Gridfinity base plates and bottoms. 
-        Integrate them into your own designs and join the Gridfinity universe! 🌌 
+        This tool lets you create custom-sized Gridfinity base plates and bottoms.
+        Integrate them into your own designs and join the Gridfinity universe! 🌌
         Simply choose your dimensions below and download your ready-to-print STL files! 🖨️
         """
     )
@@ -61,7 +64,7 @@ def setup_page() -> None:
     # Footer
     st.markdown(
         f"""
-        <footer style="position: fixed; left: 0; bottom: 0; width: 100%; 
+        <footer style="position: fixed; left: 0; bottom: 0; width: 100%;
         background-color: white; color: gray; text-align: center;">
         <p> ✨ made by jga ✨ | running version {VERSION} |
         for bug reports 🪲, questions ❓, or feedback 💭,
@@ -139,7 +142,7 @@ def generate_model(
     # Create a temporary file that won't be automatically deleted
     fd, filename = tempfile.mkstemp(suffix=".stl")
     os.close(fd)  # Close the file descriptor but keep the file
-    
+
     generator_func = getattr(gridfinity_generator, plate_type)
 
     # Call the appropriate generator function with the right parameters
@@ -178,7 +181,7 @@ def process_user_input(
     logger.info(f"Processing user input: cols={cols}, rows={rows}, width={width}, length={length}")
 
     models = {}
-    
+
     if (cols is not None and rows is not None) or (width is not None and length is not None):
         models[PlateType.BOTTOM] = generate_model(
             PlateType.BOTTOM, cols=cols, rows=rows, width=width, length=length
@@ -186,7 +189,7 @@ def process_user_input(
         models[PlateType.BASE] = generate_model(
             PlateType.BASE, cols=cols, rows=rows, width=width, length=length
         )
-    
+
     return models
 
 
@@ -197,25 +200,25 @@ def display_models(models: Dict[PlateType, GeneratedModel]) -> None:
         models: Dictionary mapping plate types to their generated models
     """
     st.header("Preview")
-    
+
     if not models:
         st.info("Use the forms above to generate models. The preview will appear here.")
         return
-        
+
     # Create columns for side-by-side display
     cols = st.columns(2)
-    
+
     for idx, plate_type in enumerate([PlateType.BOTTOM, PlateType.BASE]):
         if plate_type not in models:
             continue
-            
+
         model = models[plate_type]
         col = cols[idx]
-        
+
         # Display the 3D model
         col.subheader(f"{plate_type.capitalize()}")
         col.plotly_chart(model.figure, use_container_width=True)
-        
+
         # Add download button
         try:
             with open(model.path, "rb") as f:
@@ -241,12 +244,12 @@ def grid_input_form() -> Tuple[Optional[int], Optional[int]]:
         st.text(
             "Specify the number of columns and rows to generate a grid-based plate."
         )
-        
+
         cols = st.select_slider("Columns 📏", options=range(1, MAX_GRID_SIZE + 1), value=3)
         rows = st.select_slider("Rows 📏", options=range(1, MAX_GRID_SIZE + 1), value=3)
-        
+
         submitted = st.form_submit_button("Generate Grid! 🚀")
-        
+
         return (cols, rows) if submitted else (None, None)
 
 
@@ -261,24 +264,24 @@ def dimension_input_form() -> Tuple[Optional[float], Optional[float]]:
         st.text(
             "Specify the exact dimensions in millimeters to generate a custom-sized plate."
         )
-        
+
         width = st.number_input(
-            "Width (mm) 📏", 
-            min_value=10.0, 
-            max_value=MAX_DIMENSION_MM, 
+            "Width (mm) 📏",
+            min_value=10.0,
+            max_value=MAX_DIMENSION_MM,
             value=84.0,  # Default is 3 grid units (3 * 28mm)
             step=1.0
         )
         length = st.number_input(
-            "Length (mm) 📏", 
-            min_value=10.0, 
-            max_value=MAX_DIMENSION_MM, 
+            "Length (mm) 📏",
+            min_value=10.0,
+            max_value=MAX_DIMENSION_MM,
             value=84.0,  # Default is 3 grid units
             step=1.0
         )
-        
+
         submitted = st.form_submit_button("Generate Custom Size! 🚀")
-        
+
         return (width, length) if submitted else (None, None)
 
 
@@ -286,25 +289,25 @@ def main() -> None:
     """Main function to run the Streamlit app."""
     try:
         logger.info("Starting Gridfinity Plate Generator application")
-        
+
         # Initialize session state if needed
         if "models" not in st.session_state:
             st.session_state.models = {}
-        
+
         # Setup page UI
         setup_page()
-        
+
         # Parameter section
         st.subheader("Parameters 🛠️")
         st.write("Use either of the forms below to create your Gridfinity plate!")
-        
+
         # Input forms
         cols, rows = grid_input_form()
         width, length = dimension_input_form()
-        
+
         # Create a placeholder for the preview section
         preview_placeholder = st.empty()
-        
+
         # Process input if any form was submitted
         if cols is not None and rows is not None:
             with preview_placeholder.container():
@@ -316,7 +319,7 @@ def main() -> None:
                 st.subheader("Preview")
                 with st.spinner("Generating custom plates... This may take a moment ⏳", show_time=True):
                     st.session_state.models = process_user_input(width=width, length=length)
-        
+
         # Display models
         if cols is not None or width is not None:
             # Clear the spinner and display the models
@@ -325,7 +328,7 @@ def main() -> None:
         else:
             # Just display the models or empty state
             display_models(st.session_state.models)
-        
+
         # Clean up old temporary files when the app refreshes
         if hasattr(st.session_state, 'previous_models'):
             for plate_type, model in st.session_state.previous_models.items():
@@ -335,10 +338,10 @@ def main() -> None:
                         logger.debug(f"Cleaned up old file: {model.path}")
                 except Exception as e:
                     logger.warning(f"Error cleaning up file {model.path}: {e}")
-        
+
         # Store current models for cleanup in next run
         st.session_state.previous_models = st.session_state.models
-        
+
     except Exception as e:
         logger.exception("An error occurred in the main application")
         st.error(f"An error occurred: {str(e)}")
@@ -347,4 +350,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
+
