@@ -19,7 +19,7 @@ def setup_logging(verbose: bool) -> None:
         format="[%(levelname)s]: %(message)s",
         level=logging.DEBUG if verbose else logging.WARNING,
     )
-    
+
 def create_grid_squares(
     baseplate_height: float | int,
     bottom_chamfer_height: float | int,
@@ -184,5 +184,3 @@ def bottom(
             combined_grid_squares, output_filename, tolerance=0.99, angularTolerance=0.5
         )
     return combined_grid_squares
-
-

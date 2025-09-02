@@ -17,7 +17,7 @@
             pkgs.libGL
             pkgs.xorg.libX11
           ]}:$LD_LIBRARY_PATH";
-          
+
 
           shellHook = ''
           '' ;
