@@ -1,3 +1,12 @@
+## NOTICE - ARCHIVED
+
+this tool was a fun little project to learn making STL models using programming, much akin to OPENSCAD. The app has served my purpose and will no longer be maintained, hence the archival, but feel free to draw inspiration from it. If you need a good similar tool I suggest looking at this:
+
+https://gridfinity.perplexinglabs.com/
+
+
+---
+
 # Gridfinity Plate Generator
 
 [![PyPI](https://img.shields.io/pypi/v/gridfinity-plate-generator.svg)][![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjakob1379%2Fgridfinity-plate-generator.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjakob1379%2Fgridfinity-plate-generator?ref=badge_shield)
